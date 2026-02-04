@@ -1,20 +1,26 @@
-<link rel="stylesheet" href="./style.css">
-
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Pomodoro</title>
+  <title>Pomodoro Flow</title>
 
-  <!-- WICHTIG: CSS EINBINDEN
+  <!-- CSS einbinden -->
+  <link rel="stylesheet" href="./style.css">
 
 </head>
 <body>
 
-<h1>25:00</h1>
-<p>FOCUS</p>
+  <!-- Timer -->
+  <h1>25:00</h1>
+  <p>FOCUS</p>
 
-<script src="./script.js"></script>
-</body>
-</html>
+  <!-- Sound (optional) -->
+  <button id="sound-toggle">🔊</button>
+  <audio id="ambient" loop>
+    <source src="./assets/audio/rain.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Boid Canvas (optional, später) -->
+  <canvas id="boids"></canvas>
+
+  <!-- JavaScript
