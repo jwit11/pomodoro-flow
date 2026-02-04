@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background-color: #0E0F11;
+  background-color: #0E0F11; /* Dunkles Weltall */
   color: #A855F7;
   font-family: Arial, sans-serif;
   height: 100vh;
@@ -10,19 +10,22 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow: hidden;
 }
 
 h1 {
   font-size: 96px;
   margin: 0 0 10px 0;
   color: #A855F7;
+  text-shadow: 0 0 10px #A855F7;
 }
 
 p {
   margin: 0;
   letter-spacing: 4px;
-  opacity: 0.8;
+  opacity: 0.9;
   color: #A855F7;
+  text-shadow: 0 0 6px #A855F7;
 }
 
 button {
