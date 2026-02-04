@@ -49,7 +49,7 @@ document.getElementById("reset").onclick = resetTimer;
 
 updateTimerDisplay();
 
-// --- Boid Animation inspiriert vom Netlight Logo ---
+// --- Boid Animation + Sternenhimmel ---
 const canvas = document.getElementById("boidsCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -61,21 +61,34 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 const boids = [];
-const boidCount = 35;
+const boidCount = 25;
 const mouse = { x: canvas.width/2, y: canvas.height/2 };
 
+// Mausbewegung für leichte Interaktion
 window.addEventListener("mousemove", (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
 });
 
+// Sterne erzeugen
+const stars = [];
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5,
+    glow: Math.random() * 2
+  });
+}
+
+// Boid-Klasse
 class Boid {
   constructor() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
     this.vx = Math.random() * 1.5 - 0.75;
     this.vy = Math.random() * 1.5 - 0.75;
-    this.size = 7 + Math.random() * 3;
+    this.size = 6 + Math.random() * 3;
   }
   update() {
     this.x += this.vx;
@@ -88,9 +101,9 @@ class Boid {
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist < 120){
-      this.vx -= dx * 0.0006;
-      this.vy -= dy * 0.0006;
+    if(dist < 150){
+      this.vx -= dx * 0.0007;
+      this.vy -= dy * 0.0007;
     }
   }
   draw() {
@@ -99,27 +112,27 @@ class Boid {
     const angle = Math.atan2(this.vy, this.vx);
     ctx.rotate(angle);
 
-    // leicht gebogenes Dreieck für Netlight-Boid-Look
+    // leicht gebogenes Dreieck + Glow
     ctx.beginPath();
-    ctx.moveTo(0, -this.size); // Spitze
+    ctx.moveTo(0, -this.size);
     ctx.lineTo(-this.size*0.6, this.size*0.8);
     ctx.lineTo(this.size*0.6, this.size*0.8);
     ctx.closePath();
+
+    ctx.shadowColor = "#A855F7";
+    ctx.shadowBlur = 8;
     ctx.fillStyle = "#A855F7";
     ctx.fill();
-
     ctx.restore();
   }
 }
 
+// Boids erzeugen
 for(let i=0;i<boidCount;i++){
   boids.push(new Boid());
 }
 
-function animateBoids(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  boids.forEach(b => { b.update(); b.draw(); });
-  requestAnimationFrame(animateBoids);
-}
-
-animateBoids();
+// Animation
+function animate() {
+  // Hintergrund + Sterne
+  ctx.fillStyle =
