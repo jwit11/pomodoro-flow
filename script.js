@@ -49,7 +49,7 @@ document.getElementById("reset").onclick = resetTimer;
 
 updateTimerDisplay();
 
-// --- Boid Animation + Sternenhimmel ---
+// --- Canvas Setup ---
 const canvas = document.getElementById("boidsCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -60,12 +60,9 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-const boids = [];
-const boidCount = 25;
+// Maus für Interaktion
 const mouse = { x: canvas.width/2, y: canvas.height/2 };
-
-// Mausbewegung für leichte Interaktion
-window.addEventListener("mousemove", (e) => {
+window.addEventListener("mousemove", e => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
 });
@@ -81,14 +78,14 @@ for (let i = 0; i < 200; i++) {
   });
 }
 
-// Boid-Klasse
+// Boid Klasse
 class Boid {
   constructor() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
     this.vx = Math.random() * 1.5 - 0.75;
     this.vy = Math.random() * 1.5 - 0.75;
-    this.size = 6 + Math.random() * 3;
+    this.size = 7 + Math.random() * 3;
   }
   update() {
     this.x += this.vx;
@@ -97,7 +94,6 @@ class Boid {
     if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
-    // leichte Mausreaktion
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -112,27 +108,45 @@ class Boid {
     const angle = Math.atan2(this.vy, this.vx);
     ctx.rotate(angle);
 
-    // leicht gebogenes Dreieck + Glow
+    // Netlight-Dreieck mit Glow
     ctx.beginPath();
     ctx.moveTo(0, -this.size);
     ctx.lineTo(-this.size*0.6, this.size*0.8);
     ctx.lineTo(this.size*0.6, this.size*0.8);
     ctx.closePath();
-
-    ctx.shadowColor = "#A855F7";
-    ctx.shadowBlur = 8;
     ctx.fillStyle = "#A855F7";
+    ctx.shadowColor = "#A855F7";
+    ctx.shadowBlur = 10;
     ctx.fill();
     ctx.restore();
   }
 }
 
-// Boids erzeugen
-for(let i=0;i<boidCount;i++){
+const boids = [];
+for(let i=0;i<30;i++){
   boids.push(new Boid());
 }
 
-// Animation
+// Animation Loop
 function animate() {
   // Hintergrund + Sterne
-  ctx.fillStyle =
+  ctx.fillStyle = "#0E0F11";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = "white";
+    ctx.globalAlpha = 0.8;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+
+  // Boids
+  boids.forEach(b => b.update());
+  boids.forEach(b => b.draw());
+
+  requestAnimationFrame(animate);
+}
+
+animate();
