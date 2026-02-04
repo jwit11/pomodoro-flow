@@ -1,11 +1,20 @@
-// Timer starten: 25 Minuten
-let time = 25 * 60;
-let timerEl = document.querySelector("h1");
+// --- Pomodoro Timer Logik ---
 
-setInterval(() => {
+let focusTime = 25 * 60; // 25 Minuten
+let breakTime = 5 * 60;  // 5 Minuten
+let time = focusTime;
+
+let isRunning = false;
+let isFocus = true;
+let timerInterval = null;
+
+// Elemente aus HTML
+const timerEl = document.querySelector("h1");
+const stateEl = document.querySelector("p");
+
+// Timer Update Funktion
+function updateTimerDisplay() {
   let minutes = Math.floor(time / 60);
   let seconds = time % 60;
   timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
-  time--;
-}, 1000);
-
+  stateEl.textContent = i
