@@ -1,18 +1,14 @@
 body {
-  background-color: limegreen !important;
-}
-
-
-body {
   margin: 0;
   background-color: #0E0F11;
   color: #F2F2F2;
-  text-align: center;
   font-family: Arial, sans-serif;
   height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 h1 {
