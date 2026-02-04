@@ -66,7 +66,7 @@ window.addEventListener("mousemove", e => {
   mouse.y = e.clientY;
 });
 
-// Sterne erzeugen
+// Sterne
 const stars = [];
 for (let i = 0; i < 200; i++) {
   stars.push({
@@ -77,14 +77,14 @@ for (let i = 0; i < 200; i++) {
   });
 }
 
-// Nebel / Partikel für Tiefen-Effekt
+// Nebel / Glow mit radialen Farbverläufen
 const fog = [];
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 40; i++) {
   fog.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: 50 + Math.random() * 100,
-    opacity: 0.05 + Math.random() * 0.05
+    radius: 100 + Math.random() * 150,
+    opacity: 0.03 + Math.random() * 0.05
   });
 }
 
@@ -104,7 +104,6 @@ class Boid {
     if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
-    // leichte Mausreaktion
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -119,13 +118,12 @@ class Boid {
     const angle = Math.atan2(this.vy, this.vx);
     ctx.rotate(angle);
 
-    // Netlight-Dreieck + Glow
+    // Netlight-Dreieck mit Glow
     ctx.beginPath();
     ctx.moveTo(0, -this.size);
     ctx.lineTo(-this.size*0.6, this.size*0.8);
     ctx.lineTo(this.size*0.6, this.size*0.8);
     ctx.closePath();
-
     ctx.shadowColor = "#A855F7";
     ctx.shadowBlur = 12;
     ctx.fillStyle = "#A855F7";
@@ -141,19 +139,7 @@ for(let i=0;i<30;i++){
 
 // Animation Loop
 function animate() {
-  // Dunkler Hintergrund
-  ctx.fillStyle = "#0E0F11";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // Nebel / Partikel
-  fog.forEach(f => {
-    ctx.beginPath();
-    ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
-    ctx.fillStyle = "white";
-    ctx.globalAlpha = f.opacity;
-    ctx.fill();
-  });
-  ctx.globalAlpha = 1;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
   // Sterne
   stars.forEach(s => {
@@ -164,6 +150,15 @@ function animate() {
     ctx.fill();
   });
   ctx.globalAlpha = 1;
+
+  // Nebel / Glow
+  fog.forEach(f => {
+    const gradient = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.radius);
+    gradient.addColorStop(0, `rgba(168,85,247,${f.opacity})`);
+    gradient.addColorStop(1, "rgba(168,85,247,0)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(f.x - f.radius, f.y - f.radius, f.radius*2, f.radius*2);
+  });
 
   // Boids
   boids.forEach(b => b.update());
