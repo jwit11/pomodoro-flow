@@ -1,3 +1,4 @@
+console.log("Timer Script geladen"); 
 // --- Pomodoro Timer Logik ---
 
 let focusTime = 25 * 60; // 25 Minuten
