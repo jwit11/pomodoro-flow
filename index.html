@@ -5,74 +5,24 @@
   <title>Pomodoro Flow</title>
   <link rel="stylesheet" href="./style.css">
 </head>
-<script src="./script.js"></script>
 <body>
 
+  <!-- Boid Canvas im Hintergrund -->
+  <canvas id="boidsCanvas"></canvas>
+
+  <!-- Timer -->
   <h1>25:00</h1>
-  <p>FOCUS</p><canvas id="boidsCanvas"></canvas>
+  <p>FOCUS</p>
 
-
+  <!-- Buttons -->
   <div style="margin-top:20px;">
     <button id="startPause">Start / Pause</button>
     <button id="reset">Reset</button>
   </div>
 
-  <script>
-    // --- Pomodoro Timer direkt in HTML ---
-    let focusTime = 25 * 60;
-    let breakTime = 5 * 60;
-    let time = focusTime;
-
-    let isRunning = false;
-    let isFocus = true;
-    let timerInterval = null;
-
-    const timerEl = document.querySelector("h1");
-    const stateEl = document.querySelector("p");
-
-    function updateTimerDisplay() {
-      let minutes = Math.floor(time / 60);
-      let seconds = time % 60;
-      timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
-      stateEl.textContent = isFocus ? "FOCUS" : "BREAK";
-    }
-
-    function startPauseTimer() {
-      if (isRunning) {
-        clearInterval(timerInterval);
-        isRunning = false;
-      } else {
-        isRunning = true;
-        timerInterval = setInterval(() => {
-          if (time > 0) {
-            time--;
-            updateTimerDisplay();
-          } else {
-            // Phase wechseln
-            isFocus = !isFocus;
-            time = isFocus ? focusTime : breakTime;
-            updateTimerDisplay();
-          }
-        }, 1000);
-      }
-    }
-
-    function resetTimer() {
-      clearInterval(timerInterval);
-      isRunning = false;
-      isFocus = true;
-      time = focusTime;
-      updateTimerDisplay();
-    }
-
-    // Buttons verbinden
-    document.getElementById("startPause").onclick = startPauseTimer;
-    document.getElementById("reset").onclick = resetTimer;
-
-    // Initiales Update
-    updateTimerDisplay();
-  </script>
-
+  <!-- JS -->
+  <script src="./script.js"></script>
 </body>
 </html>
+
 
