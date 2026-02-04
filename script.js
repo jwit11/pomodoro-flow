@@ -1,8 +1,9 @@
-console.log("JS funktioniert!"); // Test ob JS geladen wird
+// --- Test, ob JS geladen wird
+console.log("JS funktioniert!");
 
 // --- Pomodoro Timer ---
-let focusTime = 25 * 60;
-let breakTime = 5 * 60;
+let focusTime = 25 * 60; // 25 Minuten
+let breakTime = 5 * 60;  // 5 Minuten
 let time = focusTime;
 
 let isRunning = false;
@@ -52,11 +53,17 @@ document.getElementById("reset").onclick = resetTimer;
 
 // Initiales Update
 updateTimerDisplay();
+
 // --- Boid Animation ---
 const canvas = document.getElementById("boidsCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 const boids = [];
 const boidCount = 30;
@@ -83,12 +90,10 @@ class Boid {
   }
 }
 
-// Boids erstellen
 for (let i = 0; i < boidCount; i++) {
   boids.push(new Boid());
 }
 
-// Animation loop
 function animateBoids() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   boids.forEach(b => {
@@ -100,8 +105,3 @@ function animateBoids() {
 
 animateBoids();
 
-// Bei Fenstergröße anpassen
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
