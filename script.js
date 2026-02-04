@@ -49,7 +49,7 @@ document.getElementById("reset").onclick = resetTimer;
 
 updateTimerDisplay();
 
-// --- Boid Animation mit Mausreaktion ---
+// --- Boid Animation inspiriert vom Netlight Logo ---
 const canvas = document.getElementById("boidsCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -61,7 +61,7 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 const boids = [];
-const boidCount = 30;
+const boidCount = 35;
 const mouse = { x: canvas.width/2, y: canvas.height/2 };
 
 window.addEventListener("mousemove", (e) => {
@@ -75,13 +75,12 @@ class Boid {
     this.y = Math.random() * canvas.height;
     this.vx = Math.random() * 1.5 - 0.75;
     this.vy = Math.random() * 1.5 - 0.75;
-    this.size = 5 + Math.random() * 3;
+    this.size = 7 + Math.random() * 3;
   }
   update() {
     this.x += this.vx;
     this.y += this.vy;
 
-    // Grenzen
     if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
@@ -89,9 +88,9 @@ class Boid {
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist < 100){
-      this.vx -= dx * 0.0005;
-      this.vy -= dy * 0.0005;
+    if(dist < 120){
+      this.vx -= dx * 0.0006;
+      this.vy -= dy * 0.0006;
     }
   }
   draw() {
@@ -100,13 +99,13 @@ class Boid {
     const angle = Math.atan2(this.vy, this.vx);
     ctx.rotate(angle);
 
-    // Dreieck
+    // leicht gebogenes Dreieck für Netlight-Boid-Look
     ctx.beginPath();
-    ctx.moveTo(0, -this.size);
-    ctx.lineTo(-this.size/2, this.size);
-    ctx.lineTo(this.size/2, this.size);
+    ctx.moveTo(0, -this.size); // Spitze
+    ctx.lineTo(-this.size*0.6, this.size*0.8);
+    ctx.lineTo(this.size*0.6, this.size*0.8);
     ctx.closePath();
-    ctx.fillStyle = "#7DD3FC";
+    ctx.fillStyle = "#A855F7";
     ctx.fill();
 
     ctx.restore();
