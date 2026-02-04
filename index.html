@@ -3,25 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <title>Pomodoro Flow</title>
-
-  <!-- CSS einbinden -->
   <link rel="stylesheet" href="./style.css">
-
 </head>
-<script src="./script.js"></script>
 <body>
 
-  <!-- Timer -->
   <h1>25:00</h1>
   <p>FOCUS</p>
 
-  <!-- Sound (optional) -->
-  <button id="sound-toggle">🔊</button>
-  <audio id="ambient" loop>
-    <source src="./assets/audio/rain.mp3" type="audio/mpeg">
-  </audio>
+  <div style="margin-top:20px;">
+    <button id="startPause">Start / Pause</button>
+    <button id="reset">Reset</button>
+  </div>
 
-  <!-- Boid Canvas (optional, später) -->
-  <canvas id="boids"></canvas>
+  <script>
+    // --- Pomodoro Timer direkt in HTML ---
+    let focusTime = 25 * 60;
+    let breakTime = 5 * 60;
+    let time = focusTime;
 
-  <!-- JavaScript
+    let isRunning = false;
+    let isFocus = true;
+    let timerInterval = null;
+
+    const timerEl = document.querySelector("h1");
+    const stateEl = document.querySelector("p");
+
+    function updateTimerDisplay() {
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+      timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      stateEl.textContent = isFocus ? "FOCUS" : "BREAK";
+    }
+
+    function startPauseTimer() {
+      if (isRunning) {
+        clearInterval(timerInterval);
+        isRunning = false;
+      } else {
+        isRunning = true;
+        timerInterval = setInterval(() => {
+          if (time > 0) {
+            time--;
+            updateTimerDisplay();
+          } else {
+            // Phase wechseln
+            isFocus = !isFocus;
+            time = isFocus ? focusTime : breakTime;
+            updateTimerDisplay();
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      isFocus = true;
+      time = focusTime;
+      updateTimerDisplay();
+    }
+
+    // Buttons verbinden
+    document.getElementById("startPause").onclick = startPauseTimer;
+    document.getElementById("reset").onclick = resetTimer;
+
+    // Initiales Update
+    updateTimerDisplay();
+  </script>
+
+</body>
+</html>
+
