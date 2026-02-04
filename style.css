@@ -1,8 +1,7 @@
-/* Body & Layout */
 body {
   margin: 0;
   background-color: #0E0F11;
-  color: #F2F2F2;
+  color: #A855F7;
   font-family: Arial, sans-serif;
   height: 100vh;
 
@@ -13,21 +12,19 @@ body {
   text-align: center;
 }
 
-/* Timer */
 h1 {
   font-size: 96px;
   margin: 0 0 10px 0;
-  color: #7DD3FC;
+  color: #A855F7;
 }
 
-/* Text */
 p {
   margin: 0;
   letter-spacing: 4px;
-  opacity: 0.7;
+  opacity: 0.8;
+  color: #A855F7;
 }
 
-/* Buttons */
 button {
   padding: 10px 20px;
   margin: 5px;
@@ -35,9 +32,17 @@ button {
   cursor: pointer;
   z-index: 1;
   position: relative;
+  background-color: #1F1F2E;
+  color: #A855F7;
+  border: 2px solid #A855F7;
+  border-radius: 6px;
 }
 
-/* Boid Canvas */
+button:hover {
+  background-color: #A855F7;
+  color: #0E0F11;
+}
+
 #boidsCanvas {
   position: fixed;
   top: 0;
